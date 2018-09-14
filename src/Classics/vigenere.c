@@ -27,6 +27,7 @@ char *encode(char *plain_text, char *key) {
         cipher_text[i] = (c + (getShift(key[j % key_length]))) % 26;
         cipher_text[i] += 'a';
         if(plain_text[i] == ' ') cipher_text[i] = ' ';
+        else if(!isalpha(plain_text[i])) cipher_text[i] = plain_text[i];
         else j++;
     }
     cipher_text[++i] = '\0';
@@ -34,8 +35,8 @@ char *encode(char *plain_text, char *key) {
 }
 
 char *decode(char *cipher_text, char *key) {
-    int key_length = strlen(key);
     char *text = (char *) calloc(strlen(cipher_text), sizeof(char));
+    int key_length = strlen(key);
     int i, j = 0;
 
     for (i = 0; cipher_text[i] != '\0'; i++) {
@@ -43,6 +44,7 @@ char *decode(char *cipher_text, char *key) {
         text[i] = (c - (getShift(key[j % key_length])) + 26) % 26;
         text[i] += 'a';
         if(cipher_text[i] == ' ') text[i] = ' ';
+        else if(!isalpha(cipher_text[i])) text[i] = cipher_text[i];
         else j++;
     }
     text[++i] = '\0';
