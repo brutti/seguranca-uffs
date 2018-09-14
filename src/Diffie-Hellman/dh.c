@@ -17,19 +17,19 @@ long long int expbinmod(long long a, long long x, long long m) {
 
 int main(void) {
 	long long int p, g, cA, cB, rA, rB, pkey_a, pkey_b;
-	
+
 	printf("Digite o valor de p (primo) e g (gerador): ");
 	scanf("%lld %lld", &p, &g);
-	
+
 	printf("Digite o valor de cA (Confidencial A) e cB (Confidencial B): ");
 	scanf("%lld %lld", &cA, &cB);
-	
+
 	rA = expbinmod(g, cA, p);
 	rB = expbinmod(g, cB, p);
-	
+
 	pkey_a = expbinmod(rB, cA, p);
 	pkey_b = expbinmod(rA, cB, p);
-	
-	printf("Chave de A = %lld\nChave de B = %lld\n", pkey_a, pkey_b);	
+
+	printf("Chave de A = %lld\nChave de B = %lld\n", pkey_a, pkey_b);
 	return 0;
 }
