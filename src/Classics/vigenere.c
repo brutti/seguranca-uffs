@@ -61,13 +61,13 @@ int main(void) {
     printf("|\t\t    Vigenere Cipher\t\t    |\n");
     printf("+---------------------------------------------------+\n");
 
-    printf("Digite a mensagem: ");
-    fgets(plain_text, MAX, stdin);
-    plain_text[strlen(plain_text) - 1] = '\0';
-
     printf("Digite a chave: ");
     fgets(key, MAX, stdin);
     key[strlen(key) - 1] = '\0';
+
+    printf("Digite a mensagem: ");
+    fgets(plain_text, MAX, stdin);
+    plain_text[strlen(plain_text) - 1] = '\0';
 
     if(strchr(key, ' ')) {
         printf("A chave nao pode conter espacos.\n");
