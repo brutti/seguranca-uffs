@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <math.h>
 #include "AES.h"
 
-void addRoundKey() {
+void add_round_key() {
     int i, j;
     for (i = 0; i < SIZE; i++)
         for (j = 0; j < SIZE; j++)
             state[i][j] ^= key[i][j];
 }
 
-void printMatrix(unsigned char M[SIZE][SIZE]) {
+void print_matrix(unsigned char M[SIZE][SIZE]) {
     int i, j;
     for (i = 0; i < SIZE; i++) {
         for (j = 0; j < SIZE; j++) {
@@ -44,20 +46,68 @@ void initialize_aes_sbox(uint8_t sbox[256]) {
     sbox[0] = 0x63;
 }
 
-void subBytes() {
+void subBytes(uint8_t sbox[256]) {
+    int i, j;
+
+    for (i = 0; i < SIZE; i++) {
+        for (j = 0; j < SIZE; j++) {
+            int index = state[i][j];
+            state[i][j] = sbox[index];
+        }
+    }
+}
+
+char findValue(char bkp_line[SIZE]) {
+    int i;
+
+    for (i = 0; i < SIZE; i++) {
+        if (bkp_line[i] != 'a') {
+            char r = bkp_line[i];
+            bkp_line[i] = 'a';
+            return r;
+        }
+    }
+    return 0;
+}
+
+void shiftRows() {
+    char bkp_line[SIZE];
+    int i, j, k;
+
+    for (i = 0; i < SIZE; i++) {
+        for (j = 0; j < i; j++) {
+            bkp_line[j] = state[i][j];
+        }
+        for (k = i; k < SIZE; k++) {
+            char tmp = state[i][k];
+            state[i][k - j] = tmp;
+        }
+        for (k = SIZE - i; k < SIZE; k++) {
+            state[i][k] = findValue(bkp_line);
+        }
+    }
+}
+
+void mixColumns() {
     
 }
 
 int main(void) {
+    int i;
     uint8_t sbox[256];
 
-    addRoundKey();
-    printMatrix(state);
+    add_round_key();
+    print_matrix(state);
     initialize_aes_sbox(sbox);
 
-    for(int i = 0; i < 256; i++) {
-        printf("%04x ", sbox[i]);
-    }
+    for (i = 0; i < 256; i++)
+        printf("%x ", sbox[i]);
+
+    subBytes(sbox);
+    shiftRows();
+
+    printf("\n");
+    print_matrix(state);
 
     return 0;
 }

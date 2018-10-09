@@ -18,10 +18,19 @@ unsigned char key[SIZE][SIZE] = {
     {0x16, 0xA6, 0x88, 0x3C}
 };
 
-void addRoundKey();
+unsigned char C[SIZE][SIZE] = {
+  {'02', '03', '01', '01'},
+  {'01', '02', '03', '01'},
+  {'01', '01', '02', '03'},
+  {'03', '01', '01', '02'}
+}
+
+void add_round_key();
 void subBytes();
-void printMatrix(unsigned char M[SIZE][SIZE]);
+void print_matrix(unsigned char M[SIZE][SIZE]);
 // By: https://en.wikipedia.org/wiki/Rijndael_S-box
 void initialize_aes_sbox(uint8_t sbox[256]);
+void shiftRows();
+void mixColumns();
 
 #endif
